@@ -4,11 +4,9 @@ import android.os.Bundle
 import android.view.WindowManager
 import androidx.annotation.NonNull
 import androidx.fragment.app.FragmentActivity
-import com.jppedrosa.mvpskeleton.R
 import com.jppedrosa.mvpskeleton.core.connection.ConnectionCallback
 import com.jppedrosa.mvpskeleton.core.connection.ConnectivityProvider
 import dagger.android.AndroidInjection
-
 
 abstract class BaseActivity<Presenter : BasePresenter<*>> : FragmentActivity(),
     ConnectivityProvider.ConnectivityStateListener {
@@ -40,12 +38,6 @@ abstract class BaseActivity<Presenter : BasePresenter<*>> : FragmentActivity(),
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState ?: Bundle())
         this.presenter = createPresenter()
-        sendViewScreen()
-    }
-
-    override fun finish() {
-        super.finish()
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
     }
 
     override fun onResume() {
@@ -107,10 +99,4 @@ abstract class BaseActivity<Presenter : BasePresenter<*>> : FragmentActivity(),
     private fun ConnectivityProvider.NetworkState.hasInternet(): Boolean {
         return (this as? ConnectivityProvider.NetworkState.ConnectedState)?.hasInternet == true
     }
-
-    /**
-     * Send view screen
-     *
-     */
-    protected abstract fun sendViewScreen()
 }
