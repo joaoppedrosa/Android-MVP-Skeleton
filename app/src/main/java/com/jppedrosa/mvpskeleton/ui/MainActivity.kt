@@ -1,30 +1,66 @@
 package com.jppedrosa.mvpskeleton.ui
 
 import android.os.Bundle
-import android.util.Log
-import com.jppedrosa.mvpskeleton.R
+import androidx.core.content.ContextCompat
 import com.jppedrosa.mvpskeleton.core.BaseActivity
 import com.jppedrosa.mvpskeleton.core.connection.ConnectionCallback
+import com.jppedrosa.mvpskeleton.databinding.ActivityMainBinding
 
 class MainActivity : BaseActivity<MainPresenter>(), MainView, ConnectionCallback {
 
-    private val TAG = "MainActivity"
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        setConnectionCallback(this)
+        this.binding = ActivityMainBinding.inflate(this.layoutInflater)
+        val view = this.binding.root
+        setContentView(view)
     }
 
     override fun createPresenter(): MainPresenter {
         return MainPresenter(this, this)
     }
 
+    override fun onStart() {
+        super.onStart()
+        this.presenter?.onStart()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        this.presenter?.onResume()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        this.presenter?.onDestroy()
+    }
+
+    override fun startInternetConnectionListener() {
+        setConnectionCallback(this)
+    }
+
+    override fun stopInternetConnectionListener() {
+        setConnectionCallback(null)
+    }
+
     override fun onConnected() {
-        Log.d(TAG, "Internet connected!")
+        this.binding.internetState.text = "Internet connected!"
+        this.binding.internetState.setTextColor(
+            ContextCompat.getColor(
+                this,
+                android.R.color.holo_green_light
+            )
+        )
     }
 
     override fun onNotConnected() {
-        Log.d(TAG, "Lost Connection: Internet disconnected!")
+        this.binding.internetState.text = "Internet disconnected!"
+        this.binding.internetState.setTextColor(
+            ContextCompat.getColor(
+                this,
+                android.R.color.holo_red_light
+            )
+        )
     }
 }

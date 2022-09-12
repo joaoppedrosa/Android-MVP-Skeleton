@@ -78,7 +78,7 @@ abstract class BaseActivity<Presenter : BasePresenter<*>> : FragmentActivity(),
         if (hasInternet) {
             this.connectionCallback!!.onConnected()
         } else {
-            this.connectionCallback!!.onConnected()
+            this.connectionCallback!!.onNotConnected()
         }
     }
 
@@ -87,8 +87,8 @@ abstract class BaseActivity<Presenter : BasePresenter<*>> : FragmentActivity(),
      *
      * @param connectionCallback
      */
-    public fun setConnectionCallback(connectionCallback: ConnectionCallback) {
-        this.connectionCallback = connectionCallback;
+    public fun setConnectionCallback(connectionCallback: ConnectionCallback?) {
+        this.connectionCallback = connectionCallback
     }
 
     /**

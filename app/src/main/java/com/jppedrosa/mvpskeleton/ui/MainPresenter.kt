@@ -11,4 +11,15 @@ class MainPresenter(
     mContext: Context
 ) : BasePresenter<MainView>(view, mContext) {
 
+    fun onStart() {
+
+    }
+
+    fun onResume() {
+        this.view?.startInternetConnectionListener()
+    }
+
+    fun onDestroy() {
+        this.view?.stopInternetConnectionListener()
+    }
 }
